@@ -15,6 +15,7 @@ class ClassNenuFITS():
         self.LFITS=pyfits.open(NameFits)
         print self
         self.ExtractInfos()
+        self.buildFuckingMapping()
 
     def __str__(self):
         s=""
@@ -28,7 +29,7 @@ class ClassNenuFITS():
         return s
 
     def buildFuckingMapping(self):
-        c= Fits.ChanInfo.reshape(2,Fits.ChanInfo.size/2).T
+        c= self.ChanInfo.reshape(2,self.ChanInfo.size/2).T
         m=np.zeros((6,6),int)-1
         for i in range(self.nNumDesc):
             m[c[i,0],c[i,1]]=i
@@ -82,21 +83,28 @@ class ClassNenuFITS():
         
 
     def BuildMSData(self):
-        dataOut=np.zeros((self.nt*self.nbl,self.nchan,4),dtype=np.complex64)
+
+        na=3
+        nbl=(na**2-na)/2+na
+
+        self.nbl=nbl
+        dataOut=np.zeros((self.nt*nbl,self.nf,4),dtype=np.complex64)
         
         for pi in range(2):
+            
             for pj in range(2):
                 for ai in range(3):
-                    for aj in range(i,3):
+                    for aj in range(3):
+                        print pi,pj,ai,aj
                         i=2*ai+pi
                         j=2*aj+pj
                         ichan=self.mapping[i,j]
                         if ichan==-1: continue
                         ThisData=self.data[:,:,ichan]
                         if i>=j:
-                            self.dataOut[ai::nbl,:,pi+2*pj]+=ThisData
+                            dataOut[ai::nbl,:,pi+2*pj]+=ThisData
                         else:
-                            self.dataOut[ai::nbl,:,pi+2*pj]+=1j*ThisData
+                            dataOut[ai::nbl,:,pi+2*pj]+=1j*ThisData
 
         self.dataMS=dataOut
         
