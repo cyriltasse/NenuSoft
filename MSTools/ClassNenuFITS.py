@@ -84,19 +84,19 @@ class ClassNenuFITS():
     def BuildMSData(self):
         dataOut=np.zeros((self.nt*self.nbl,self.nchan,4),dtype=np.complex64)
         
-        # real part
-        for p in range(2):
-            for ai in range(3):
-                for aj in range(i,3):
-                    i=2*ai+p
-                    j=2*aj+p
-                    ichan=self.mapping[i,j]
-                    if ichan==-1: continue
-                    ThisData=self.data[:,:,ichan]
-                    if i>=j:
-                        self.dataOut[ai::nbl,:,p]+=ThisData
-                    else:
-                        self.dataOut[ai::nbl,:,p]+=1j*ThisData
+        for pi in range(2):
+            for pj in range(2):
+                for ai in range(3):
+                    for aj in range(i,3):
+                        i=2*ai+pi
+                        j=2*aj+pj
+                        ichan=self.mapping[i,j]
+                        if ichan==-1: continue
+                        ThisData=self.data[:,:,ichan]
+                        if i>=j:
+                            self.dataOut[ai::nbl,:,pi+2*pj]+=ThisData
+                        else:
+                            self.dataOut[ai::nbl,:,pi+2*pj]+=1j*ThisData
 
         self.dataMS=dataOut
         
