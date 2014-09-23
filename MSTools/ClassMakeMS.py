@@ -1,6 +1,7 @@
 
 import ModParsetType
 import os
+import TimeTools.GiveStrDate
 
 class ClassMakeMS():
     def __init__(self,binMakeMS="makems"):
@@ -19,7 +20,7 @@ class ClassMakeMS():
         MS=self.MS
         MS1name=self.MS1name
         
-        DateTime=GiveDate(t0)
+        DateTime=TimeTools.GiveStrDate(t0)
         # Date,Time=DateTime.datetime().date().isoformat(),DateTime.datetime().time().isoformat()
         # SDateTime=Date+'/'+Time
 
