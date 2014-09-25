@@ -79,7 +79,7 @@ class ClassNenuFITS():
         self.dataAll=self.LFITS[2].data
         self.data=self.dataAll.DATA
         self.times=self.dataAll.JD
-        self.data=self.data.reshape((self.nt,self.nf,self.nNumDesc))
+        self.data=self.data.reshape((self.nt,self.nNumDesc,self.nf))
         
 
     def BuildMSData(self):
@@ -89,7 +89,12 @@ class ClassNenuFITS():
 
         self.nbl=nbl
         dataOut=np.zeros((self.nt*nbl,self.nf,4),dtype=np.complex64)
-        
+
+
+        # import pylab
+        # pylab.ion()
+        # pylab.clf()
+        # m=10000000
         for pi in range(2):
             
             for pj in range(2):
@@ -100,7 +105,11 @@ class ClassNenuFITS():
                         j=2*aj+pj
                         ichan=self.mapping[i,j]
                         if ichan==-1: continue
-                        ThisData=self.data[:,:,ichan]
+                        ThisData=self.data[:,ichan,:]
+                        # pylab.imshow(ThisData[::10,:].T,vmin=-m,vmax=m)
+                        # pylab.draw()
+                        # pylab.show(False)
+                        # pylab.pause(0.1)
                         if i>=j:
                             dataOut[ai::nbl,:,pi+2*pj]+=ThisData
                         else:
